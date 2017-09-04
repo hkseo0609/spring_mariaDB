@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+@IMPORT "common.css";
+#board-tab{width: 80%; margin: 0 auto; text-align: center;}
+#board-tab>tr{border: 1px solid black;}
+#board-tab-tr>td{border: 1px solid black; height: 25px;}
+.board-div-style{text-align: center; width: 32%;}
+
+/*submit*/
+.submit-pink{background-color: pink; width:235px;}
+
+/*writer*/
+#wrapper{background-image: url("");}
