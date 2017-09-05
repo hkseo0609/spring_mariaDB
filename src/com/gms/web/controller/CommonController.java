@@ -33,11 +33,11 @@ public class CommonController extends HttpServlet {
 			break;
 		case Action.LOGIN:
 			System.out.println("로그인 탐");
-			MemberService service = MemberServiceImpl.getInstance();
+			//MemberService service = MemberServiceImpl.getInstance();
 			MemberBean bean = new MemberBean();
 			bean.setId(request.getParameter("login_id"));
 			bean.setPwd(request.getParameter("login_pwd"));
-			Map<String,Object> map=service.login(bean);
+			Map<String,Object> map=MemberServiceImpl.getInstance().login(bean);
 			
 			if(map.get("page").equals("main")){
 				session.setAttribute("user", map.get("user"));

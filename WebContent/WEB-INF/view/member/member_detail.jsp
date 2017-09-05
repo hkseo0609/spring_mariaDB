@@ -23,7 +23,7 @@
                       
                       <li><p id="detail_phone"><span class="glyphicon glyphicon-earphone one" style="width:50px;"></span>${requestScope.detail.phone }</p></li>
                       <li><p id="detail_email"><span class="glyphicon glyphicon-envelope one" style="width:50px;"></span>${requestScope.detail.email }</p></li>
-                      <li><p id="detail_title"> <span class="glyphicon glyphicon-map-marker one" style="width:50px;"></span></p></li>
+                      <li><p id="detail_title"> <span class="glyphicon glyphicon-map-marker one" style="width:50px;">${requestScope.detail.subj }</span></p></li>
                       <li><p><span class="glyphicon glyphicon-credit-card one" style="width:50px;"></span>66330007</p></li>
                     </ul>
                     </div>

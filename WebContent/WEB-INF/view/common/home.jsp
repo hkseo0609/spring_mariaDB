@@ -19,7 +19,7 @@
 		<fieldset>
 		<legend>로그인</legend>
 			<span class="login-span">ID</span>
-			<input type="text" id="login_id" name="login_id" value="da" /><br />
+			<input type="text" id="login_id" name="login_id" value="kang" /><br />
 			<label>PASSWORD</label><input type="password" id="login_pwd" name="login_pwd" value="1234"/><br />
 			<mark style="font-size: 13px"> *ID는 숫자 포함 8글자 이내*</mark><br />
 			<input id="loginBtn" type="submit" value="LOING"  class="submit-pink" >

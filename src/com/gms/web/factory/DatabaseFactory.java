@@ -25,8 +25,8 @@ public class DatabaseFactory {
 			url = DB.MYSQL_URL;
 			break;
 		case MARIADB: 
-			driver = DB.MRIADB_DRIVER;
-			url = DB.MRIADB_URL;
+			driver = DB.MARIADB_DRIVER;
+			url = DB.MARIADB_URL;
 			break;
 		default:
 			break;

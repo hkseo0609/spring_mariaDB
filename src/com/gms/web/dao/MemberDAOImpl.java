@@ -14,6 +14,7 @@ import com.gms.web.command.Command;
 import com.gms.web.constants.DB;
 import com.gms.web.constants.SQL;
 import com.gms.web.constants.Vendor;
+import com.gms.web.domain.DatabaseBean;
 import com.gms.web.domain.MajorBean;
 import com.gms.web.domain.MemberBean;
 import com.gms.web.domain.StudentBean;
@@ -32,18 +33,19 @@ public class MemberDAOImpl implements MemberDAO{
 
 	@Override
 	public List<?> selectAll(Command cmd) {
+		System.out.println("dao list진입");
 		List<StudentBean> list = new ArrayList<>();
 		try {
-			conn = DatabaseFactory.createDatabse(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection();
+			conn = DatabaseFactory.createDatabse(Vendor.MARIADB, DB.USERNAME, DB.PASSWORD).getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(SQL.STUDENT_LIST);
-			pstmt.setString(1, cmd.getStartRow());
+			pstmt.setString(1, cmd.getStartRow());;
 			pstmt.setString(2, cmd.getEndRow());
 			ResultSet rs = pstmt.executeQuery();
 			StudentBean member = null;
 			while(rs.next()){
 				member = new StudentBean();
-				member.setNum(rs.getString(DB.STUD_NUM));
-				member.setSubj(rs.getString(DB.STUD_TITLE));
+				member.setNum(String.valueOf(rs.getInt(DB.STUD_NUM)));
+				member.setSubj(rs.getString(DB.STUD_SUBJ));
 				member.setId(rs.getString(DB.ID));
 				member.setName(rs.getString(DB.MEM_NAME));
 				member.setSsn(rs.getString(DB.MEM_SSN));
@@ -68,7 +70,7 @@ public class MemberDAOImpl implements MemberDAO{
 		System.out.println("dao 넘어온 칼럼: "+cmd.getColumn());
 		int count=0;
 		try {
-			conn = DatabaseFactory.createDatabse(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection();
+			conn = DatabaseFactory.createDatabse(Vendor.MARIADB, DB.USERNAME, DB.PASSWORD).getConnection();
 			PreparedStatement pstmt = null;
 			if(cmd.getSearch()==null){
 				//sql = "SELECT COUNT(*) AS count FROM student";
@@ -105,7 +107,7 @@ public class MemberDAOImpl implements MemberDAO{
 		
 		//트랜잭션 -> 두개의 테이블에 하나의 값을 나눠서 담는 것
 		try {
-			conn = DatabaseFactory.createDatabse(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection();
+			conn = DatabaseFactory.createDatabse(Vendor.MARIADB, DB.USERNAME, DB.PASSWORD).getConnection();
 			conn.setAutoCommit(false);
 			pstmt = conn.prepareStatement(SQL.MEMBER_INSERT);
 			pstmt.setString(1,member.getId());
@@ -153,14 +155,13 @@ public class MemberDAOImpl implements MemberDAO{
 	public StudentBean selectByid(Command cmd) {
 		StudentBean member = null;
 		try {
-			PreparedStatement pstmt = DatabaseFactory.createDatabse(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.STUDENT_FINDBYID);
+			PreparedStatement pstmt = DatabaseFactory.createDatabse(Vendor.MARIADB, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.STUDENT_FINDBYID);
 			pstmt.setString(1, cmd.getSearch());
 			ResultSet rs = pstmt.executeQuery();
 	
 			if(rs.next()){
 				member = new StudentBean();
-				member.setNum(rs.getString(DB.STUD_NUM));
-				member.setSubj(rs.getString(DB.STUD_TITLE));
+				member.setSubj(rs.getString(DB.STUD_SUBJ));
 				member.setId(rs.getString(DB.ID));
 				member.setName(rs.getString(DB.MEM_NAME));
 				member.setSsn(rs.getString(DB.MEM_SSN));
@@ -182,14 +183,13 @@ public class MemberDAOImpl implements MemberDAO{
 		System.out.println("파인드네임 진입 : "+cmd.getColumn());
 		List<StudentBean> list = new ArrayList<>();
 		try {
-			PreparedStatement pstmt = DatabaseFactory.createDatabse(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.STUDENT_SSEARCH);
+			PreparedStatement pstmt = DatabaseFactory.createDatabse(Vendor.MARIADB, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.STUDENT_SSEARCH);
 			pstmt.setObject(1, "%"+cmd.getSearch()+"%");
 			ResultSet rs = pstmt.executeQuery();
 			StudentBean member = null;
 			while(rs.next()){
 				member = new StudentBean();
-				member.setNum(rs.getString(DB.STUD_NUM));
-				member.setSubj(rs.getString(DB.STUD_TITLE));
+				member.setSubj(rs.getString(DB.STUD_SUBJ));
 				member.setId(rs.getString(DB.ID));
 				member.setName(rs.getString(DB.MEM_NAME));
 				member.setSsn(rs.getString(DB.MEM_SSN));
@@ -211,7 +211,7 @@ public class MemberDAOImpl implements MemberDAO{
 	public String update(MemberBean bean) {
 		String rs="";
 		try {
-			PreparedStatement pstmt = DatabaseFactory.createDatabse(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.MEMBER_UPDATE);
+			PreparedStatement pstmt = DatabaseFactory.createDatabse(Vendor.MARIADB, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.MEMBER_UPDATE);
 			pstmt.setString(1, bean.getPwd());
 			pstmt.setString(2, bean.getId());
 			rs=String.valueOf(pstmt.executeUpdate());
@@ -227,7 +227,7 @@ public class MemberDAOImpl implements MemberDAO{
 	public String delete(Command cmd) {
 		String rs="";
 		try {
-			PreparedStatement pstmt = DatabaseFactory.createDatabse(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.MEMBER_DELETE);
+			PreparedStatement pstmt = DatabaseFactory.createDatabse(Vendor.MARIADB, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.MEMBER_DELETE);
 			pstmt.setString(1, cmd.getSearch());
 			rs = String.valueOf(pstmt.executeUpdate());
 		} catch (Exception e) {
@@ -239,18 +239,18 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 	@Override
 	public MemberBean login(Command cmd) {
+		System.out.println("dao 로그인 탐");
 		MemberBean member = null;
 		try {
-			PreparedStatement pstmt = DatabaseFactory.createDatabse(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.MEMBER_FINDBYID);
+			PreparedStatement pstmt = DatabaseFactory.createDatabse(Vendor.MARIADB, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.MEMBER_FINDBYID);
 			pstmt.setString(1, cmd.getSearch());
 			ResultSet rs = pstmt.executeQuery();
-	
+			
 			if(rs.next()){
 				member = new MemberBean();
 				member.setId(rs.getString(DB.MEM_ID));
 				member.setName(rs.getString(DB.MEM_NAME));
 				member.setPwd(rs.getString(DB.MEM_PWD));
-				member.setRegdate(rs.getString(DB.MEM_REGDATE));
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

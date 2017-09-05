@@ -20,8 +20,8 @@ public class  DatabaseBean implements Serializable{
 	}
 	public Connection getConnection(){
 		try {
-			Class.forName(DB.ORACLE_DRIVER);
-			connection = DriverManager.getConnection(DB.ORACLE_URL,DB.USERNAME,DB.PASSWORD);
+			Class.forName(driver);
+			connection = DriverManager.getConnection(url,DB.USERNAME,DB.PASSWORD);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

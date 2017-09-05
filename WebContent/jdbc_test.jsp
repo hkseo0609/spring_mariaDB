@@ -3,10 +3,10 @@
 <%@ page import = "java.sql.*" %>
 <%
 	String findName="";
-	Class.forName(DB.ORACLE_DRIVER);
-	Connection conn = DriverManager.getConnection(DB.ORACLE_URL,DB.USERNAME,DB.PASSWORD);
+	Class.forName(DB.MARIADB_DRIVER);
+	Connection conn = DriverManager.getConnection(DB.MARIADB_URL,DB.USERNAME,DB.PASSWORD);
 	Statement stmt = conn.createStatement();
-	String sql="SELECT * FROM MEMBER WHERE member_id = 'bo'";
+	String sql="SELECT * FROM MEMBER WHERE member_id = 'kang'";
 	ResultSet rs = stmt.executeQuery(sql);
 	
 	if(rs.next()){

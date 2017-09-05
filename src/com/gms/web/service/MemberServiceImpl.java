@@ -75,6 +75,7 @@ public class MemberServiceImpl implements MemberService {
 		Command cmd = new Command();
 		cmd.setSearch(bean.getId());
 		MemberBean temp = MemberDAOImpl.getInstance().login(cmd);
+		System.out.println(temp.getId());
 		String page = (temp!=null) ? (bean.getPwd().equals(temp.getPwd())) ? "main" : "login": "join";
 		map.put("page", page);
 		map.put("user", temp);

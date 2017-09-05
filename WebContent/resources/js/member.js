@@ -193,6 +193,7 @@ var home=(function(){
 var memberDetail=(function(){
 	var init=function(){
 		onCreate();
+		
 	};
 	var onCreate=function(){
 		
@@ -210,6 +211,7 @@ var memberDetail=(function(){
 	var setContentView=function(){
 		
 	};
+	
 	return {
 		init : init
 	};
@@ -221,9 +223,6 @@ var memberUpdate=(function(){
 	};
 	var onCreate=function(){
 		setContentView();
-		
-	};
-	var setContentView=function(){
 		$('#update_id').text(sessionStorage.getItem('id')+' 의 회원정보');
 		$('#name').attr('placeholder', sessionStorage.getItem('name'));
 		$('#email').attr('placeholder', sessionStorage.getItem('email'));
@@ -233,11 +232,32 @@ var memberUpdate=(function(){
 			alert('수정할 ID: '+sessionStorage.getItem('id'));
 			controller.updateStudent(sessionStorage.getItem('id'),$('#email').val());
 		});
+		
+		
+	};
+	var setContentView=function(){};
 
+
+	return {
+		init : init
+	};
+	
+})();
+
+var memberList=(function(){
+	var init = function(){
+		onCreate();
+	};
+	var onCreate=function(){
+		var $n1 = $("#detail_btn");
+ 		$n1.addClass('detail_id');
+		$('.detail_id a').eq(0).on('click', function(){
+			controller.detailStudent('kang');
+		});
 	};
 	
 	return {
-		init : init
+		init:init
 	};
 	
 })();

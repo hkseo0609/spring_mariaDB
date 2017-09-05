@@ -1,7 +1,7 @@
 package com.gms.web.constants;
 
 public class SQL {
-	public static final String MEMBER_INSERT=String.format("insert into %s(%s,%s,%s,%s,regdate,%s,%s,%s) values(?,?,?,?,SYSDATE,?,?,?)",DB.TABLE_MEMBER,DB.MEM_ID,DB.MEM_PWD,DB.MEM_NAME,DB.MEM_SSN,DB.MEM_PHONE,DB.MEM_EMAIL,DB.MEM_PROFILE);
+	public static final String MEMBER_INSERT=String.format("insert into %s(%s,%s,%s,%s,regdate,%s,%s,%s) values(?,?,?,?,now(),?,?,?)",DB.TABLE_MEMBER,DB.MEM_ID,DB.MEM_PWD,DB.MEM_NAME,DB.MEM_SSN,DB.MEM_PHONE,DB.MEM_EMAIL,DB.MEM_PROFILE);
 	public static final String MEMBER_LIST="SELECT * FROM MEMBER";
 	public static final String MEMBER_FINDBYNAME=String.format("SELECT * FROM MEMBER WHERE %s=?",DB.MEM_NAME);
 	public static final String MEMBER_FINDBYID=String.format("SELECT * FROM MEMBER WHERE %s=?",DB.MEM_ID);
@@ -9,7 +9,7 @@ public class SQL {
 	public static final String MEMBER_UPDATE=String.format("UPDATE MEMBER SET %s=? WHERE %s=?",DB.MEM_PWD,DB.MEM_ID);
 	public static final String MEMBER_DELETE=String.format("DELETE FROM MEMBER WHERE %s=?",DB.MEM_ID);
 
-	public static final String BOARD_INSERT=String.format("insert into %s(%s,%s,%s,%s,%s,%s) values(article_seq.nextval,0,?,?,?,SYSDATE)",DB.TABLE_BOARD,DB.BOARD_SEQ,DB.BOARD_HIT,DB.ID,DB.TITLE,DB.BOARD_CONTENT,DB.BOARD_REGDATE);
+	public static final String BOARD_INSERT=String.format("insert into %s(%s,%s,%s,%s,%s) values(0,?,?,?,now())",DB.TABLE_BOARD,DB.BOARD_SEQ,DB.BOARD_HIT,DB.ID,DB.TITLE,DB.BOARD_CONTENT,DB.BOARD_REGDATE);
 	public static final String BOARD_LIST=String.format("SELECT * FROM %s",DB.TABLE_BOARD);
 	public static final String BOARD_FINDBYSEQ=String.format("SELECT * FROM %s WHERE %s=?",DB.TABLE_BOARD, DB.BOARD_SEQ);
 	public static final String BOARD_FINDBYID=String.format("SELECT * FROM %s WHERE %s=?",DB.TABLE_BOARD, DB.MEM_ID);
@@ -18,7 +18,9 @@ public class SQL {
 	public static final String BOARD_DELETE=String.format("DELETE FROM %s WHERE %s=?",DB.TABLE_BOARD,DB.BOARD_SEQ);
 
 	public static final String MAJOR_INSERT=String.format("insert into %s(%s,%s,%s,%s) values(?,?,?,?)",DB.TABLE_MAJOR,DB.MAJOR_ID,DB.TITLE, DB.MEM_ID, DB.MAJOR_SUBJ);
-	public static final String STUDENT_LIST="select t.* from (select rownum rnum, s.* from student s)t where t.rnum between ? and ?";
+	//public static final String STUDENT_LIST="select * from student";
+	//public static final String STUDENT_LIST=String.format("select t2.* from (select @rnum := @rnum +1 as no, t.* from student t, (select @rnum := 0) b order by no desc)t2 limit ?,5");
+	public static final String STUDENT_LIST=String.format("select num, id, name, ssn, email, phone, subj, regdate from (select @rnum := @rnum +1 as num, s.* from (select @rnum := 0) r, student s)t where num between ? and ?");
 	public static final String STUDENT_COUNT="SELECT COUNT(*)AS count FROM student where name like ?";
 	
 	public static final String STUDENT_SEARCH="select t.* from (select rownum rnum, s.* from student s WHERE name like '%' || ? || '%')t where t.rnum between 1 and 5";
